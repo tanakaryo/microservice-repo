@@ -1,0 +1,24 @@
+services:
+  service-a:
+    image: service-a:latest
+    container_name: service-a
+    restart: always
+    networks:
+      - svc-net
+    # ports:
+    #   - 8081:8081
+  service-b:
+    image: service-b:latest
+    container_name: service-b
+    restart: always
+    networks:
+      - svc-net
+    ports:
+      - 8082:8082
+networks:
+  svc-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
