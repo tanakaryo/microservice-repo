@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service
+  template:
+    metadata:
+      labels:
+        app: service
+    spec:
+      containers:
+      - name: service-a
+        image: service-a:latest
+        imagePullPolicy: IfNotPresent
+        # 下記は入れても入れなくてもどっちでも良い
+        # ports:
+        # - containerPort: 8181
+      - name: service-b
+        image: service-b:latest
+        imagePullPolicy: IfNotPresent
+        # 下記は入れても入れなくてもどっちでも良い
+        # ports:
+        # - containerPort: 8282
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-svc
+spec:
+  selector:
+    app: service
+  ports:
+  - port: 8282
+    targetPort: 8282
+  type: LoadBalancer
